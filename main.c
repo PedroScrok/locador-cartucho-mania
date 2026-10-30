@@ -25,6 +25,48 @@ int menuPrincipal() {
     return opcaoPrincipal;
 }
 
+//MODULO 1 CLIENTES: 
+//Autor: Pedro Scrok Bernardo RGM:47153695
+
+    #define MAX_CLIENTES 50
+
+    struct dadosClientes{
+        int idCliente;
+        char nomeCliente[50];
+        int idade;
+        char telefone[15]; //OBS: definidass como char pois não aceita int com 11 digitos;
+        char cpf[12];
+        float saldo;
+
+    };
+
+struct dadosClientes clientes[MAX_CLIENTES];
+int totalClientes = 0;
+
+void cadastrando(){
+
+    if(totalClientes >= MAX_CLIENTES){
+        printf("Numero de máximo de clientes atingido! \n");
+        return;
+    }
+        
+    printf("Qual nome: \n");
+    scanf(" %49[^\n]", clientes[totalClientes].nomeCliente);
+    printf("Qual idade: \n");
+    scanf("%d", &clientes[totalClientes].idade);
+    printf("Qual telefone: \n");
+    scanf(" %14s", clientes[totalClientes].telefone);
+    printf("Qual CPF: \n");
+    scanf(" %11s", clientes[totalClientes].cpf);
+
+    clientes[totalClientes].idCliente = totalClientes +1;
+
+    totalClientes ++;
+
+    printf("Cliente cadastrado! \n");
+
+}
+
 int menuClientes() {
     int opcaoClientes = 0;
 
@@ -48,6 +90,8 @@ int menuClientes() {
 
         switch (opcaoClientes) {
             case 1:
+                cadastrando();
+                return 9;
             case 2:
             case 3:
             case 4:
