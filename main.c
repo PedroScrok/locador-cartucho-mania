@@ -81,6 +81,20 @@ struct Jogo {
 struct Jogo listaJogos[50];
 int totalJogos = 0;
 
+void cadastrarJogo() {
+    printf("\n========== Cadastrar Jogo ==========\n");
+    if (totalJogos >= 50) {
+        printf("Erro: Limite de jogos cadastrados atingido.\n");
+        return;
+    }
+
+    listaJogos[totalJogos].idJogo = totalJogos + 1;
+
+    printf("Nome do jogo: ");
+    scanf("%s", listaJogos[totalJogos].nomeJogo);
+
+    printf("Nome lido: %s\n", listaJogos[totalJogos].nomeJogo);
+}
 
 int menuJogos() {
     int opcaoJogos = 0;
@@ -105,6 +119,8 @@ int menuJogos() {
 
         switch (opcaoJogos) {
             case 1:
+                cadastrarJogo();
+                break;
             case 2:
             case 3:
             case 4:
