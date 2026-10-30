@@ -64,6 +64,24 @@ int menuClientes() {
     return opcaoClientes;
 }
 
+// --------------------------------------------------
+// MODULO 2: JOGOS
+// Autor: Eduardo Piana Passos da Silva - RGM 48545015
+// -------------------------------------------------
+
+struct Jogo {
+    int idJogo;
+    char nomeJogo[50];
+    int plataforma; // 1 = nintendo 2 = megadrive
+    int estoque;
+    float valorAluguel; 
+    int ativo; // 1 = ativo, 0 = removido
+};
+
+struct Jogo listaJogos[50];
+int totalJogos = 0;
+
+
 int menuJogos() {
     int opcaoJogos = 0;
 
