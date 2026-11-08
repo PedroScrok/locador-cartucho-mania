@@ -156,6 +156,131 @@ void cadastrarJogo() {
     totalJogos++;
 }
 
+// Autor: Eduardo Piana Passos da Silva - RGM 48545015
+
+void listarJogos() {
+    printf("\n========== Lista de Jogos ==========\n");
+
+    if (totalJogos == 0) {
+        printf("Nenhum jogo cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < totalJogos; i++) {
+        if (listaJogos[i].ativo == 1) {
+            printf("ID: %d | %s | ", listaJogos[i].idJogo, listaJogos[i].nomeJogo);
+            if (listaJogos[i].plataforma == 1) {
+                printf("Plataforma: Nintendo ");
+            } else if (listaJogos[i].plataforma == 2) {
+                printf("Plataforma: Mega Drive ");
+            }
+            printf(" | Estoque: %d | R$ %.2f\n", listaJogos[i].estoque, listaJogos[i].valorAluguel);
+        }
+    }
+}
+
+int buscarIndiceJogo(int id) {
+    for (int i = 0; i < totalJogos; i++) {
+        if (listaJogos[i].idJogo == id && listaJogos[i].ativo == 1) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void removerJogo() {
+    printf("\n========== Remover Jogo ==========\n");
+
+    int id;
+    printf("Digite o ID do jogo que deseja remover: ");
+    if (scanf("%d", &id) != 1) {
+        limparEntradaJogo();
+        printf("Erro: ID invalido.\n");
+        return;
+    }
+
+    int posicao = buscarIndiceJogo(id);
+    if (posicao == -1) {
+        printf("Erro: jogo com ID %d nao encontrado.\n", id);
+        return;
+    }
+
+    listaJogos[posicao].ativo = 0;
+    printf("Jogo removido: %s\n", listaJogos[posicao].nomeJogo);
+}
+
+// Autor: Eduardo Piana Passos da Silva - RGM 48545015
+// Atualiza o nome, o estoque ou o valor de um jogo, sem mexer nos outros dados.
+void atualizarJogo() {
+    printf("\n========== Atualizar Jogo ==========\n");
+
+    int id;
+    printf("Digite o ID do jogo que deseja atualizar: ");
+    if (scanf("%d", &id) != 1) {
+        limparEntradaJogo();
+        printf("Erro: ID invalido.\n");
+        return;
+    }
+
+    int posicao = buscarIndiceJogo(id);
+    if (posicao == -1) {
+        printf("Erro: jogo com ID %d nao encontrado.\n", id);
+        return;
+    }
+
+    int campo;
+    int novoEstoque;
+    float novoValor;
+
+    printf("Jogo encontrado: %s\n", listaJogos[posicao].nomeJogo);
+    printf("[1] - Nome\n");
+    printf("[2] - Estoque\n");
+    printf("[3] - Valor do aluguel\n");
+    printf("O que deseja atualizar? ");
+    if (scanf("%d", &campo) != 1) {
+        limparEntradaJogo();
+        campo = 0;
+    }
+
+    switch (campo) {
+        case 1:
+            printf("Novo nome: ");
+            scanf(" %49[^\n]", listaJogos[posicao].nomeJogo);
+            break;
+        case 2:
+            do {
+                printf("Novo estoque: ");
+                if (scanf("%d", &novoEstoque) != 1) {
+                    limparEntradaJogo();
+                    novoEstoque = -1;
+                }
+                if (novoEstoque < 0) {
+                    printf("Erro: digite um numero maior ou igual a 0.\n");
+                }
+            } while (novoEstoque < 0);
+            listaJogos[posicao].estoque = novoEstoque;
+            break;
+        case 3:
+            do {
+                printf("Novo valor do aluguel: ");
+                if (scanf("%f", &novoValor) != 1) {
+                    limparEntradaJogo();
+                    novoValor = 0;
+                }
+                if (novoValor <= 0) {
+                    printf("Erro: digite um valor maior que zero.\n");
+                }
+            } while (novoValor <= 0);
+            listaJogos[posicao].valorAluguel = novoValor;
+            break;
+        default:
+            printf("Opcao invalida. Nada foi alterado.\n");
+            return;
+    }
+
+    printf("Jogo atualizado com sucesso!\n");
+}
+
 int menuJogos() {
     int opcaoJogos = 0;
 
@@ -182,9 +307,13 @@ int menuJogos() {
                 cadastrarJogo();
                 break;
             case 2:
+                listarJogos();
+                break;
             case 3:
+                atualizarJogo();
+                break;
             case 4:
-                printf("Funcionalidade ainda nao implementada.\n");
+                removerJogo();
                 break;
             case 9:
                 break;
