@@ -81,6 +81,17 @@ struct Jogo {
 struct Jogo listaJogos[50];
 int totalJogos = 0;
 
+// ---- Autor: Eduardo Piana Passos da Silva - RGM 48545015 ---
+// Descarta tudo o que sobrou digitado no teclado ate o "Enter"
+// Usar quando um scanf de numero falhar (no caso da pessoa digitar letra)
+
+void limparEntradaJogo() {   
+    int caractere;
+    while ((caractere = getchar()) != '\n' && caractere != EOF) {
+    }
+}
+
+// Autor: Eduardo Piana Passos da Silva - RGM 48545015
 void cadastrarJogo() {
     printf("\n========== Cadastrar Jogo ==========\n");
     if (totalJogos >= 50) {
@@ -91,9 +102,58 @@ void cadastrarJogo() {
     listaJogos[totalJogos].idJogo = totalJogos + 1;
 
     printf("Nome do jogo: ");
-    scanf("%s", listaJogos[totalJogos].nomeJogo);
+    scanf(" %49[^\n]", listaJogos[totalJogos].nomeJogo);
 
-    printf("Nome lido: %s\n", listaJogos[totalJogos].nomeJogo);
+    int plataforma;
+
+    do {
+        printf("Plataforma (1 - Nintendo, 2 - Mega Drive): ");
+        if (scanf("%d", &plataforma) != 1) {
+            limparEntradaJogo();
+            plataforma = 0; //se a pessoa digitou letra, com 0 no próximo if ele mostra o erro e depois repete a pergunta 
+        }
+        if (plataforma != 1 && plataforma != 2) {
+            printf("Erro: Plataforma invalida. Digite 1 para Nintendo ou 2 para Mega Drive.\n");
+        }
+    } while (plataforma != 1 && plataforma != 2);
+
+    listaJogos[totalJogos].plataforma = plataforma;
+
+    int estoque;
+
+    do {
+        printf("Quantidade em estoque: ");
+        if (scanf("%d", &estoque) != 1) {
+            limparEntradaJogo();
+            estoque = -1; //se a pessoa digitou letra, com -1 no próximo if ele mostra o erro e depois repete a pergunta 
+        }
+        if (estoque < 0) {
+            printf("Erro: Quantidade em estoque invalida. Digite um numero valido.\n");
+        }
+    } while (estoque < 0);
+
+    listaJogos[totalJogos].estoque = estoque;
+
+    float valorAluguel;
+
+    do {
+        printf("Valor do aluguel: ");
+        if (scanf("%f", &valorAluguel) != 1) {
+            limparEntradaJogo();
+            valorAluguel = 0; 
+        }
+        if (valorAluguel <= 0) {
+            printf("Erro: Valor do aluguel invalido. Digite um valor maior que zero.\n");
+        }
+    } while (valorAluguel <= 0);
+
+    listaJogos[totalJogos].valorAluguel = valorAluguel;
+
+    listaJogos[totalJogos].ativo = 1;
+
+    printf("Jogo cadastrado com sucesso! ID: %d | %s\n", listaJogos[totalJogos].idJogo, listaJogos[totalJogos].nomeJogo);
+
+    totalJogos++;
 }
 
 int menuJogos() {
