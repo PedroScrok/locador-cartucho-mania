@@ -1,5 +1,7 @@
 
 #include <stdio.h>
+#include <string.h>
+#include "jogos.h"
 
 int menuPrincipal() {
     int opcaoPrincipal = 0;
@@ -108,78 +110,6 @@ int menuClientes() {
     return opcaoClientes;
 }
 
-// --------------------------------------------------
-// MODULO 2: JOGOS
-// Autor: Eduardo Piana Passos da Silva - RGM 48545015
-// -------------------------------------------------
-
-struct Jogo {
-    int idJogo;
-    char nomeJogo[50];
-    int plataforma; // 1 = nintendo 2 = megadrive
-    int estoque;
-    float valorAluguel; 
-    int ativo; // 1 = ativo, 0 = removido
-};
-
-struct Jogo listaJogos[50];
-int totalJogos = 0;
-
-void cadastrarJogo() {
-    printf("\n========== Cadastrar Jogo ==========\n");
-    if (totalJogos >= 50) {
-        printf("Erro: Limite de jogos cadastrados atingido.\n");
-        return;
-    }
-
-    listaJogos[totalJogos].idJogo = totalJogos + 1;
-
-    printf("Nome do jogo: ");
-    scanf("%s", listaJogos[totalJogos].nomeJogo);
-
-    printf("Nome lido: %s\n", listaJogos[totalJogos].nomeJogo);
-}
-
-int menuJogos() {
-    int opcaoJogos = 0;
-
-    do {
-        printf("\n========== Locadora Cartucho Mania - Jogos ==========\n");
-        printf("[1] - Cadastrar jogo\n");
-        printf("[2] - Listar cadastros de jogos\n");
-        printf("[3] - Atualizar cadastro do jogo\n");
-        printf("[4] - Remover cadastro do jogo\n");
-        printf("[9] - Voltar ao menu principal\n");
-        printf("Opcao desejada: ");
-
-        if (scanf("%d", &opcaoJogos) != 1) {
-            int caractere;
-            while ((caractere = getchar()) != '\n' && caractere != EOF) {
-            }
-            printf("Erro: Entrada invalida, digite um numero.\n");
-            opcaoJogos = -1;
-            continue;
-        }
-
-        switch (opcaoJogos) {
-            case 1:
-                cadastrarJogo();
-                break;
-            case 2:
-            case 3:
-            case 4:
-                printf("Funcionalidade ainda nao implementada.\n");
-                break;
-            case 9:
-                break;
-            default:
-                printf("Erro: Opcao invalida.\n");
-        }
-
-    } while (opcaoJogos != 9);
-
-    return opcaoJogos;
-}
 
 int menuFuncionarios() {
     int opcaoFuncionarios = 0;
@@ -261,6 +191,7 @@ int menuPDV() {
 
 int main() {
     int opcaoMain;
+    carregarJogosCSV();
 
     do {
         opcaoMain = menuPrincipal();
