@@ -25,8 +25,6 @@ struct Jogo listaJogos[MAX_JOGOS];
 int totalJogos = 0;
 
 // ---- Autor: Eduardo Piana Passos da Silva - RGM 48545015 ---
-// Descarta tudo o que sobrou digitado no teclado ate o "Enter"
-// Usar quando um scanf de numero falhar (no caso da pessoa digitar letra)
 
 void limparEntradaJogo() {   
     int caractere;
@@ -34,9 +32,8 @@ void limparEntradaJogo() {
     }
 }
 
-// Autor: Eduardo Piana Passos da Silva - RGM 48545015
 void salvarJogosCSV() {
-    FILE *arquivo = fopen("jogos.csv", "w");
+    FILE *arquivo = fopen("jogos.csv", "w"); //ponteiro e "w" apaga o conteudo antigo
     if (arquivo == NULL) {
         printf("Erro: nao foi possivel abrir jogos.csv para gravar.\n");
         return;
@@ -65,11 +62,12 @@ void carregarJogosCSV() {
     while (totalJogos < MAX_JOGOS &&
            fscanf(arquivo, "%d;%49[^;];%d;%d;%f;%d\n",
                   &listaJogos[totalJogos].idJogo,
-                  listaJogos[totalJogos].nomeJogo,
+                  listaJogos[totalJogos].nomeJogo, //string, endereço de onde começa na memória
                   &listaJogos[totalJogos].plataforma,
                   &listaJogos[totalJogos].estoque,
                   &listaJogos[totalJogos].valorAluguel,
-                  &listaJogos[totalJogos].ativo) == 6) {
+                  &listaJogos[totalJogos].ativo) == 6) { //conferir se todos os campos foram lifos
+                
         totalJogos++;
     }
 
@@ -140,7 +138,7 @@ void cadastrarJogo() {
 
     totalJogos++;
 
-    salvarJogosCSV();
+    salvarJogosCSV(); //pro novo jogo entrar na contagem
 }
 
 // Autor: Eduardo Piana Passos da Silva - RGM 48545015
@@ -190,7 +188,7 @@ void removerJogo() {
     }
 
     int posicao = buscarIndiceJogo(id);
-    if (posicao == -1) {
+    if (posicao == -1) { //nenhuma posição do vetor é negativa 
         printf("Erro: jogo com ID %d nao encontrado.\n", id);
         return;
     }
