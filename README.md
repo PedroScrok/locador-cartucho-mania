@@ -1,18 +1,17 @@
 ## Projeto  C - Sistema de aluguel de cartuchos em C.
 - **Tema:** locadora de cartuchos de SNES e Mega.
-- **Menu principal:** Usuários, Jogos, Funcionários, PDV/Aluguéis e Sair.
+- **Menu principal:** Clientes, Jogos, PDV/Aluguéis e Sair.
 - **Usuários:** cadastrar, listar, atualizar, remover e voltar.
 - **Jogos:** cadastrar, listar, atualizar nome/estoque/valor do aluguel, remover e voltar.
-- **Funcionários:** cadastrar, listar, atualizar, remover e voltar.
-- **PDV/Aluguéis:** criar aluguel, listar por status, atualizar status, remover e voltar.
+- **PDV/Aluguéis:** criar aluguel, listar, devolver, remover e voltar.
 - **Um aluguel corresponde a um jogo.**
-- **Cada aluguel registra o funcionário que realizou a operação.**
+- **Cada aluguel registra o cliente, o jogo, o valor e o status.**
 - **Branch:** `issue/XXXX` (exemplo atual: `issue/001`).
 - **Tipo de mudança fica na mensagem do commit**, como `feat: ...`, `fix: ...` ou `docs: ...`.
 
 ## Padrão dos menus
 
-- O menu principal mostra as quatro áreas e a opção Sair.
+- O menu principal mostra as três áreas e a opção Sair.
 - No menu principal, `0` significa Sair.
 - Em todos os submenus, usar `9` para Voltar ao menu principal.
 - Depois de tratar uma opção de submenu, exibir novamente o submenu, exceto quando a pessoa escolher Voltar.
@@ -22,7 +21,7 @@
 
 ## Padrão das operações CRUD
 
-Aplicar o mesmo comportamento geral em Usuários, Jogos e Funcionários:
+Aplicar o mesmo comportamento geral em Clientes e Jogos:
 
 - **Cadastrar:** solicitar os dados do registro, validar os campos definidos pelo grupo e informar se o cadastro foi realizado.
 - **Listar:** mostrar os registros cadastrados; se não houver registros, informar que a lista está vazia.
@@ -39,10 +38,12 @@ Aplicar o mesmo comportamento geral em Usuários, Jogos e Funcionários:
 
 ### Regras específicas de PDV/Aluguéis
 
-- Cada registro de aluguel se refere a um usuário, um jogo e o funcionário que fez a operação.
-- O aluguel começa em um status ativo; a lista deve permitir consultar aluguéis por status.
+- Cada registro de aluguel guarda os IDs do cliente e do jogo, o valor e o status.
+- O aluguel começa em um status ativo; a lista mostra os registros que não foram removidos.
 - Ao devolver um jogo, atualizar o status e o estoque apenas uma vez.
-- O grupo ainda precisa decidir se Remover apaga o aluguel ou registra um cancelamento, preservando o histórico.
+- Cadastrar retira uma unidade do estoque. Atualizar registra a devolução.
+- Remover marca o registro como removido e devolve uma unidade ao estoque se o aluguel ainda estiver aberto.
+- Os três módulos salvam os dados em CSV e carregam ao iniciar o programa.
 
 As regras acima de estoque e integridade são padrões de funcionamento sugeridos para manter os dados coerentes; o grupo deve revisá-las antes de implementá-las.
 
@@ -71,9 +72,4 @@ No README final, informar com transparência como a IA foi usada, incluir o link
 
 ## 8. Decisões pendentes
 
-- Campos de cadastro de Usuários e Funcionários.
-- Dados que serão armazenados no aluguel, além de usuário, jogo, funcionário e status.
 - Representação da matriz de controle exigida na disciplina.
-- Regras de remoção para registros ligados ao histórico de aluguéis.
-- Como conciliar os quatro módulos funcionais com as quatro responsabilidades técnicas descritas no material da disciplina.
-- Os dados ficam em memória conforme o exercício da disciplina; assim, são perdidos ao fechar o programa. Salvar em arquivo pode ser avaliado como melhoria, se couber no escopo e nas regras da disciplina.

@@ -293,7 +293,7 @@ void buscarJogoPorNome() {
     }
 }
 
-// Autor: Eduardo Piana Passos da Silva - RGM 48545015
+// Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int menuJogos() {
     int opcaoJogos = 0;
 

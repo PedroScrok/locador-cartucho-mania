@@ -3,7 +3,9 @@
 #include <string.h>
 #include "jogos.h"
 #include "cadastrosClientes.h"
+#include "pdv.h"
 
+// Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int menuPrincipal() {
     int opcaoPrincipal = 0;
     int resultadoLeitura = 0;
@@ -11,8 +13,7 @@ int menuPrincipal() {
     printf("\n========== Locadora Cartucho Mania ==========\n");
     printf("[1] - Modulo clientes\n");
     printf("[2] - Modulo jogos\n");
-    printf("[3] - Modulo funcionarios\n");
-    printf("[4] - PDV / alugueis\n");
+    printf("[3] - PDV / alugueis\n");
     printf("[0] - Sair\n");
     printf("Opcao desejada: ");
 
@@ -30,6 +31,7 @@ int menuPrincipal() {
 
 
 
+// Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int menuClientes() {
     int opcaoClientes = 0;
 
@@ -81,45 +83,7 @@ int menuClientes() {
 }
 
 
-int menuFuncionarios() {
-    int opcaoFuncionarios = 0;
-
-    do {
-        printf("\n========== Locadora Cartucho Mania - Funcionarios ==========\n");
-        printf("[1] - Cadastrar funcionario\n");
-        printf("[2] - Listar cadastro de funcionarios\n");
-        printf("[3] - Atualizar cadastro de funcionarios\n");
-        printf("[4] - Remover cadastro de funcionario\n");
-        printf("[9] - Voltar ao menu principal\n");
-        printf("Opcao desejada: ");
-
-        if (scanf("%d", &opcaoFuncionarios) != 1) {
-            int caractere;
-            while ((caractere = getchar()) != '\n' && caractere != EOF) {
-            }
-            printf("Erro: Entrada invalida, digite um numero.\n");
-            opcaoFuncionarios = -1;
-            continue;
-        }
-
-        switch (opcaoFuncionarios) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-                printf("Funcionalidade ainda nao implementada.\n");
-                break;
-            case 9:
-                break;
-            default:
-                printf("Erro: Opcao invalida.\n");
-        }
-
-    } while (opcaoFuncionarios != 9);
-
-    return opcaoFuncionarios;
-}
-
+// Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int menuPDV() {
     int opcaoPDV = 0;
 
@@ -127,7 +91,7 @@ int menuPDV() {
         printf("\n========== Locadora Cartucho Mania - PDV ==========\n");
         printf("[1] - Cadastrar registro de aluguel\n");
         printf("[2] - Listar registros de alugueis\n");
-        printf("[3] - Atualizar registro de aluguel\n");
+        printf("[3] - Atualizar registro de aluguel (devolucao)\n");
         printf("[4] - Remover registro de aluguel\n");
         printf("[9] - Voltar ao menu principal\n");
         printf("Opcao desejada: ");
@@ -143,11 +107,17 @@ int menuPDV() {
 
         switch (opcaoPDV) {
             case 1:
+                cadastrarAluguel();
+                break;
             case 2:
+                listarAlugueis();
+                break;
             case 3:
+                atualizarAluguel();
+                break;
             case 4:
-            printf("Funcionalidade ainda nao implementada.\n");
-            break;
+                removerAluguel();
+                break;
             case 9:
                 break;
             default:
@@ -159,10 +129,12 @@ int menuPDV() {
     return opcaoPDV;
 }
 
+// Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int main() {
     int opcaoMain;
     carregarJogosCSV();
     carregarClientesCSV();
+    carregarAlugueisCSV();
     do {
         opcaoMain = menuPrincipal();
 
@@ -174,9 +146,6 @@ int main() {
                 menuJogos();
                 break;
             case 3:
-                menuFuncionarios();
-                break;
-            case 4:
                 menuPDV();
                 break;
             case 0:
