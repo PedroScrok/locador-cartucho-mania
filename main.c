@@ -1,9 +1,21 @@
 
 #include <stdio.h>
+#include <stdlib.h>  // system, usado no limparTela
 #include <string.h>
+#include <locale.h>  // setlocale
 #include "jogos.h"
 #include "cadastrosClientes.h"
 #include "pdv.h"
+
+// Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
+// Limpa o terminal: "cls" no Windows e "clear" no Linux/Mac
+void limparTela() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
 
 // Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int menuPrincipal() {
@@ -55,22 +67,21 @@ int menuClientes() {
         }
 
         switch (opcaoClientes) {
-                case 1:
-                    cadastrando();
-                    return 9;
-                case 2:
-                    listar();
-                    return 9;
-                case 3:
-                    atualizarCadastro();
-                    return 9;
-                case 4:
-                    removerCadastroCliente();
-                    return 9;
-                case 5:
-                    listarTodosClientes();
-                    return 9;
-               
+            case 1:
+                cadastrando();
+                break;
+            case 2:
+                listar();
+                break;
+            case 3:
+                atualizarCadastro();
+                break;
+            case 4:
+                removerCadastroCliente();
+                break;
+            case 5:
+                listarTodosClientes();
+                break;
             case 9:
                 break;
             default:
@@ -93,6 +104,9 @@ int menuPDV() {
         printf("[2] - Listar registros de alugueis\n");
         printf("[3] - Atualizar registro de aluguel (devolucao)\n");
         printf("[4] - Remover registro de aluguel\n");
+        printf("[5] - Relatorio de faturamento\n");
+        printf("[6] - Matriz: alugueis por plataforma e status\n");
+        printf("[7] - Ranking dos jogos mais alugados\n");
         printf("[9] - Voltar ao menu principal\n");
         printf("Opcao desejada: ");
 
@@ -118,6 +132,15 @@ int menuPDV() {
             case 4:
                 removerAluguel();
                 break;
+            case 5:
+                relatorioFaturamento();
+                break;
+            case 6:
+                relatorioMatrizPlataforma();
+                break;
+            case 7:
+                relatorioRankingJogos();
+                break;
             case 9:
                 break;
             default:
@@ -132,21 +155,29 @@ int menuPDV() {
 // Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int main() {
     int opcaoMain;
+    setlocale(LC_CTYPE, "Portuguese");
     carregarJogosCSV();
     carregarClientesCSV();
     carregarAlugueisCSV();
+    limparTela();
     do {
         opcaoMain = menuPrincipal();
 
         switch (opcaoMain) {
             case 1:
+                limparTela();
                 menuClientes();
+                limparTela();
                 break;
             case 2:
+                limparTela();
                 menuJogos();
+                limparTela();
                 break;
             case 3:
+                limparTela();
                 menuPDV();
+                limparTela();
                 break;
             case 0:
                 printf("Encerrando o programa...\n");
