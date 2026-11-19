@@ -32,6 +32,7 @@ void limparEntradaJogo() {
     }
 }
 
+// Autor: Eduardo Piana Passos da Silva - RGM 48545015
 void salvarJogosCSV() {
     FILE *arquivo = fopen("jogos.csv", "w"); //ponteiro e "w" apaga o conteudo antigo
     if (arquivo == NULL) {
@@ -52,6 +53,7 @@ void salvarJogosCSV() {
     fclose(arquivo);
 }
 
+// Autor: Eduardo Piana Passos da Silva - RGM 48545015
 void carregarJogosCSV() {
     FILE *arquivo = fopen("jogos.csv", "r");
     if (arquivo == NULL) {
@@ -66,7 +68,7 @@ void carregarJogosCSV() {
                   &listaJogos[totalJogos].plataforma,
                   &listaJogos[totalJogos].estoque,
                   &listaJogos[totalJogos].valorAluguel,
-                  &listaJogos[totalJogos].ativo) == 6) { //conferir se todos os campos foram lifos
+                  &listaJogos[totalJogos].ativo) == 6) { //conferir se todos os campos foram lidos
                 
         totalJogos++;
     }
@@ -151,6 +153,8 @@ void listarJogos() {
         return;
     }
 
+    int mostrados = 0; // conta os jogos ativos que apareceram na lista
+
     for (int i = 0; i < totalJogos; i++) {
         if (listaJogos[i].ativo == 1) {
             printf("ID: %d | %s | ", listaJogos[i].idJogo, listaJogos[i].nomeJogo);
@@ -160,7 +164,12 @@ void listarJogos() {
                 printf("Plataforma: Mega Drive ");
             }
             printf(" | Estoque: %d | R$ %.2f\n", listaJogos[i].estoque, listaJogos[i].valorAluguel);
+            mostrados++;
         }
+    }
+
+    if (mostrados == 0) { // todos os jogos foram removidos
+        printf("Nenhum jogo ativo no catalogo.\n");
     }
 }
 
@@ -293,6 +302,49 @@ void buscarJogoPorNome() {
     }
 }
 
+// Autor: Eduardo Piana Passos da Silva - RGM 48545015
+// Relatorio: jogos ativos do aluguel mais caro para o mais barato (Bubble Sort).
+// Ordena uma lista de POSICOES (ordem) e nao o vetor listaJogos, porque o ID
+// de cada jogo depende da posicao da gaveta (ID = posicao + 1).
+void relatorioJogosPorValor() {
+    int ordem[MAX_JOGOS]; // guarda as posicoes dos jogos ativos
+    int quantidade = 0;
+
+    for (int i = 0; i < totalJogos; i++) {
+        if (listaJogos[i].ativo == 1) {
+            ordem[quantidade] = i;
+            quantidade++;
+        }
+    }
+
+    if (quantidade == 0) {
+        printf("Nenhum jogo ativo no catalogo.\n");
+        return;
+    }
+
+    // Bubble Sort: compara vizinhos e troca quando o da esquerda e mais barato.
+    // A cada passada, o mais barato que sobrou "afunda" para o fim da lista.
+    for (int passada = 0; passada < quantidade - 1; passada++) {
+        for (int j = 0; j < quantidade - 1 - passada; j++) {
+            if (listaJogos[ordem[j]].valorAluguel < listaJogos[ordem[j + 1]].valorAluguel) {
+                int troca = ordem[j];
+                ordem[j] = ordem[j + 1];
+                ordem[j + 1] = troca;
+            }
+        }
+    }
+
+    printf("\n========== Jogos por valor do aluguel ==========\n");
+    for (int k = 0; k < quantidade; k++) {
+        int posicao = ordem[k];
+        printf("%2d. R$ %.2f | %s | Estoque: %d\n",
+               k + 1,
+               listaJogos[posicao].valorAluguel,
+               listaJogos[posicao].nomeJogo,
+               listaJogos[posicao].estoque);
+    }
+}
+
 // Autor: Pedro Henrique Pereira Dallavale - RGM 48123170
 int menuJogos() {
     int opcaoJogos = 0;
@@ -304,6 +356,7 @@ int menuJogos() {
         printf("[3] - Atualizar cadastro do jogo\n");
         printf("[4] - Remover cadastro do jogo\n");
         printf("[5] - Buscar jogo por nome\n");
+        printf("[6] - Relatorio: jogos por valor do aluguel\n");
         printf("[9] - Voltar ao menu principal\n");
         printf("Opcao desejada: ");
 
@@ -331,6 +384,9 @@ int menuJogos() {
                 break;
             case 5:
                 buscarJogoPorNome();
+                break;
+            case 6:
+                relatorioJogosPorValor();
                 break;
             case 9:
                 break;
